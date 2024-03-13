@@ -1,0 +1,40 @@
+.Categories{
+    display: flex;
+    height: 20vh;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px;
+    gap: 50px;
+    padding-bottom: 60px;
+}
+.category-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    
+}
+
+.category-list button{
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    align-items: center;
+    letter-spacing: 4px;
+    gap: 15px;
+    width: 250px;
+    height: 40px;
+    border-radius: 25px;
+    background-color: transparent;
+    color: black;
+    font-size: 15px;
+}
+.category-list button:active{
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+.category-list button:hover{
+    background-color: black;
+    color: white;
+}

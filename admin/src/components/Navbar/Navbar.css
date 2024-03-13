@@ -1,0 +1,20 @@
+.nav-logo{
+    height: 50px; 
+}
+.nav-profile{
+    height: 50px;
+    margin-left: 70%;
+}
+.navbar{
+     display: flex;
+     padding: 10px 20px;
+     box-shadow: 0 1px 3px -2px #000;
+     margin-bottom: 0.5px;
+     background: white;
+     gap: 40px;
+}
+.navbar h2{
+    font-size: 20px;
+    margin-right: 0%;    
+    font-family: 'Poppins';
+}

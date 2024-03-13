@@ -1,0 +1,27 @@
+/* ladingspinner.css */
+
+@keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set height to 100vh to cover the entire viewport */
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1); /* Light grey border */
+    border-top: 5px solid #383636; /* Darker color for the top border */
+    border-radius: 50%;
+    animation: spinner 1s linear infinite;
+  }
+  

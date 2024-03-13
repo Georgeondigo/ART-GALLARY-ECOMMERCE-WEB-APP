@@ -1,0 +1,55 @@
+.artist-info img{
+height: 300px;
+width: 300px;
+border-radius: 150px;
+margin-right: 200px;
+
+}
+
+.artist-info{
+    height: 50vh;
+    display: flex;
+    margin-left: 200px;
+    
+}
+.artist-info p{
+ display: block;
+ margin: 10px;
+ margin-left: 130px;
+ margin-right: 150px;
+ margin-top: 70px;
+}
+
+.artwork-image{
+    width: 300px;
+    height: 400px;
+    
+}
+
+.artist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title{
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+.artist-artwork h3{
+    margin-bottom: 9px;
+}
+.artist-artworks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items horizontally */
+  }
+  
+  .artwork-item {
+    width: calc(33.33% - 20px); /* Each artwork occupies approximately 33.33% of the container width minus some margin */
+    margin: 20px; /* Add margin around each artwork */
+    box-sizing: border-box; /* Include padding and border in the width */
+  }
+.artwork-item p{
+    margin-bottom: 5px;
+}
+  

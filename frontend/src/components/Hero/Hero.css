@@ -1,0 +1,96 @@
+.hero{
+    height: 100vh;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    display: flex;
+    
+}
+ .hero-left{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0px;
+    gap: 20px;
+    padding: 100px 200px 100px;
+    line-height: 1.1;
+ }
+.hero-left h2{
+    font-size: 30px;
+}
+
+ .hero-left button{
+   color: rgb(255, 255, 255);
+   border: 1px solid black;
+   padding: 9px 80px;
+   text-transform: uppercase;
+   letter-spacing: 4px;
+   position: relative;
+   overflow: hidden;
+   cursor: pointer;
+   border-radius: 25px;
+   background: rgb(0, 0, 0);
+   
+   &:before, &:after {
+       content:'';
+       position: absolute;
+       display: block;
+       height: 100%;
+       width: 100%;
+       top: 0;
+       left: 0;
+   }
+   
+   span{
+      position: relative;
+      z-index: 100;
+   }
+   &:before {
+       transform: translate3d(-100%, 0, 0);
+       background-color: rgb(0, 0, 0);
+       border: 0px solid rgb(0, 0, 0);
+       
+       
+       transition: transform 300ms $ease-in-cubic;
+   }
+   
+   &:after {
+       background-color: rgb(255, 255, 255);
+       border: 1px solid transparent;
+       color: rgb(197, 68, 68);
+       transform: translate3d(100%, 0, 0);
+       
+       transition: transform 300ms 300ms cubic-bezier(.16,.73,.58,.62);
+   }
+   
+   &:hover {
+       &:before {
+           transform: translate3d(0,0,0);
+       }
+       
+       &:after {
+           transform: translate3d(0,0,0);
+       }
+   }
+}
+ .hero-left button:hover {
+   background-color: rgb(251, 250, 250); 
+   color: rgb(0, 0, 0);
+   border-color: rgb(0, 0, 0);
+ }
+
+ .hero-right{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+ }
+
+ .hero-right img{
+  
+    width: 650px;
+    margin-top: 0px;
+    margin-right: 180px;
+    border-radius: 10px;
+ }
+ 

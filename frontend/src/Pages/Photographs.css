@@ -1,0 +1,13 @@
+.shopcategory-products{
+    margin: 20px 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 60px;
+}
+.Photographs h1{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-bottom: 20px;
+}

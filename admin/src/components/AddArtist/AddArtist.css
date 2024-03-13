@@ -1,0 +1,68 @@
+.add-artist {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px 50px;
+    margin: 20px 30px;
+    border-radius: 6px;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    font-family: 'Poppins';
+  }
+  
+  .add-artist-itemfield {
+    width: 100%;
+    color: #7b7b7b;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
+  .add-artist-itemfield input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding-left: 15px;
+    border: 1px solid #c3c3c3;
+    outline: none;
+    color: #7b7b7b;
+    font-family: 'Poppins';
+    font-size: 14px;
+  }
+  
+  .add-artist-itemfield select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding-left: 15px;
+    border: 1px solid #c3c3c3;
+    outline: none;
+    color: #7b7b7b;
+    font-family: 'Poppins';
+    font-size: 14px;
+  }
+  
+  .add-artist-thumbnail-img {
+    height: 80px;
+    width: 80px;
+    border-radius: 10px;
+    object-fit: contain;
+    margin: 0px 0px;
+  }
+  
+  .add-artist-btn {
+    margin-top: 15px;
+    width: 100px;
+    height: 30px;
+    border-radius: 6px;
+    background: #6079ff;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+  }
+.add-artist img {
+    height: 60px;
+}
+  
