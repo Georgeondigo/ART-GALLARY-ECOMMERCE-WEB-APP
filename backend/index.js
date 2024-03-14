@@ -123,6 +123,10 @@ const Product = mongoose.model("Product",{
         type: Number,
         required: true
     },
+    description:{
+        type:String,
+        required: true
+    },
     artist:{
         type: String,
         required: true

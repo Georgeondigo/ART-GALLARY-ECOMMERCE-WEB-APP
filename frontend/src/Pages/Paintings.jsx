@@ -29,7 +29,7 @@ export const Paintings = () => {
       <h1>Paintings</h1>
       <div className="shopcategory-products">
         {paintings.map((item, i) => (
-          <Artitem key={i} id={item.id} name={item.name} image={item.image} price={item.price} category={item.category} />
+          <Artitem key={i} id={item.id} name={item.name} image={item.image} description={item.description} price={item.price} category={item.category} />
         ))}
       </div>
     </div>

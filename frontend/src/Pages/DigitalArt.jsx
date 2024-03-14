@@ -29,7 +29,7 @@ export const DigitalArt = () => {
       <h1>Digital Art</h1>
       <div className="shopcategory-products">
         {digitalArt.map((item, i) => (
-          <Artitem key={i} id={item.id} name={item.name} image={item.image} price={item.price} category={item.category} />
+          <Artitem key={i} id={item.id} name={item.name} image={item.image} price={item.price} description={item.description} category={item.category} />
         ))}
       </div>
     </div>
