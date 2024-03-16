@@ -3,10 +3,13 @@ import './CartItems.css';
 import { ShopContext } from '../../Context/ShopContext';
 import remove_icon from '../Assets/cart_cross_icon.png';
 import LoadingSpinner from '../Loadingspinner/loadspinner';
+import { useNavigate } from 'react-router-dom'
 
 export const CartItems = () => {
     const { getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext);
     const [isLoading, setIsLoading] = useState(true); // Add loading state and initialize as true
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Simulate loading delay for demonstration purposes
@@ -66,15 +69,15 @@ export const CartItems = () => {
                         <hr />
                         <div className="cartitems-total-item">
                             <p>Shiping fee</p>
-                            <p>Free</p>
+                            <p>${getTotalCartAmount()===0?0:5}</p>
                         </div>
                         <hr />
                         <div className="cartitems-total-item">
                             <h3>Total</h3>
-                            <h3>${getTotalCartAmount()}</h3>
+                            <h3>${getTotalCartAmount()===0?0:getTotalCartAmount()+5}</h3>
                         </div>
                     </div>
-                    <button>PROCEED TO CHECKOUT</button>
+                    <button onClick={()=>{navigate('/order')}}>PROCEED TO CHECKOUT</button>
                 </div>
                 <div className="cartitems-promocode">
                     <p>If you have a promo code, Enter it here</p>
