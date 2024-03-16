@@ -55,10 +55,10 @@
 }
 .cartitems-total button{
     width: 262px;
-    height: 58px;
+    height: 48px;
     outline: none;
     border: none;
-    background: #5aa2ff;
+    background: #000000;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
