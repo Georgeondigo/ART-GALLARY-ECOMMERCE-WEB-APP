@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import data_product from '../components/Assets/data';
 import new_collections from '../components/Assets/new_collections';
 import artistData from '../components/Assets/artists';
+import axios from 'axios'
+import { jwtDecode } from "jwt-decode";
 
 export const ShopContext = createContext(null);
 
@@ -18,61 +20,82 @@ export const ShopContextProvider = (props) => {
 
     const [all_product,setAll_Product] =useState([]);
     const [cartItems, setCartItems] = useState(getDefaultCart());
+    const [userId, setUserId] = useState(null);
 
 
-    useEffect(()=>{
-        fetch('http://localhost:5858/allproducts')
-        .then((response)=>response.json())
-        .then((data)=>setAll_Product(data))
+    useEffect(() => {
+        axios.get('http://localhost:5858/allproducts')
+            .then(response => { setAll_Product(response.data); })
+            .catch(error => { console.error('Error fetching all products:', error); });
+    
+            fetchUserId();
 
-        if(localStorage.getItem('auth-token')){
-            fetch('http://localhost:5858/getcart',{
-                method:'POST',
-                headers:{
-                    Accept:'application/form-data',
-                    'auth-token':`${localStorage.getItem('auth-token')}`,
-                    'Content-Type':'application/json'
-                },
-                body:""
-            }).then((resp)=>resp.json()).then((data)=>setCartItems(data))
+        if (localStorage.getItem('auth-token')) {
+            axios.post('http://localhost:5858/getcart', {}, {
+                headers: {
+                    'auth-token': localStorage.getItem('auth-token'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => { setCartItems(response.data); })
+            .catch(error => { console.error('Error fetching cart:', error); });
         }
-    },[])
+    }, []);
+
+   
+
+    const fetchUserId = () => {
+        const token = localStorage.getItem('auth-token');
+        if (token) {
+            const decoded = jwtDecode(token);
+            const userId = decoded.user.id;
+            setUserId(userId);
+        } else {
+            console.error('User ID not found in token');
+        }
+    };
 
     const addToCart = (itemId) => {
-        setCartItems((prev)=>({...prev,[itemId]:prev[itemId]+1}))
-        if(localStorage.getItem('auth-token')){
-            fetch('http://localhost:5858/addtocart',{
-                method:'POST',
-                headers:{
-                    Accept:'application/form-data',
-                    'auth-token':`${localStorage.getItem('auth-token')}`,
-                    'Content-Type':'application/json',
+        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    
+        if (localStorage.getItem('auth-token')) {
+            axios.post('http://localhost:5858/addtocart', { itemId }, {
+                headers: {
+                    'auth-token': localStorage.getItem('auth-token'),
+                    'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({"itemId":itemId}), 
+                data: JSON.stringify({ itemId }) // Include itemId in the request body
             })
-            .then((resp)=>resp.json())
-            .then((data)=>console.log(data));
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error('Error adding to cart:', error);
+            });
         }
-    }
+    };
 
     
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev)=>({...prev,[itemId]:prev[itemId]-1}))
-        if(localStorage.getItem('auth-token')){
-            fetch('http://localhost:5858/removefromcart',{
-                method:'POST',
-                headers:{
-                    Accept:'application/form-data',
-                    'auth-token':`${localStorage.getItem('auth-token')}`,
-                    'Content-Type':'application/json',
+        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    
+        if (localStorage.getItem('auth-token')) {
+            axios.post('http://localhost:5858/removefromcart', { itemId }, {
+                headers: {
+                    'auth-token': localStorage.getItem('auth-token'),
+                    'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({"itemId":itemId}), 
+                data: JSON.stringify({ itemId }) // Include itemId in the request body
             })
-            .then((resp)=>resp.json())
-            .then((data)=>console.log(data))
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error('Error removing from cart:', error);
+            });
         }
-    }
+    };
 
 
     const getTotalCartAmount = () => {
@@ -96,7 +119,7 @@ export const ShopContextProvider = (props) => {
         return totalItem;
     }
 
-    const contextValue = { getTotalCartItems, getTotalCartAmount, all_product, cartItems, data_product, new_collections, addToCart, removeFromCart, artistData };
+    const contextValue = {userId, getTotalCartItems, getTotalCartAmount, all_product, cartItems, data_product, new_collections, addToCart, removeFromCart, artistData ,setCartItems};
     
     return (
         <ShopContext.Provider value={contextValue}>
