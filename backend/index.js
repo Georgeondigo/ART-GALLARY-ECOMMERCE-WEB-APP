@@ -2,10 +2,11 @@ const port = 5858;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const jwt =require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const stripe = require('stripe')('sk_test_51Ow7SuRurjVAv2nUx6lDaDNRNz2kGfUC9LuKBIup58STVfWDlKF7ROiU1RDCDZSgFKpQUf8ahZveUzzoWgjS9GTP00tozMReER');
 
 app.use(express.json());
 app.use(cors());
@@ -336,7 +337,7 @@ const Users = mongoose.model('Users',{
     },
     cartData:{
         type: Object,
-
+       
     },
     date:{
         type:Date,
@@ -492,7 +493,71 @@ app.post('/getcart',fetchUser,async(req,res)=>{
 })
 
 
+// Schema for order
 
+const orderSchema = new mongoose.Schema({
+    userId: {type:String,required:true},
+    items: { type: Array, required:true},
+    amount: { type: Number, required: true},
+    address:{type:Object,required:true},
+    status: {type:String,default:"Food Processing"},
+    date: {type:Date,default:Date.now()},
+    payment:{type:Boolean,default:false}
+})
+
+const orderModel = mongoose.models.order || mongoose.model("order", orderSchema);
+
+// Endpoint for placing an order
+app.post("/placeorder", async (req, res) => {
+
+    try {
+        const defaultCartData = req.body.defaultCartData;
+        const newOrder = new orderModel({
+            userId: req.body.userId,
+            items: req.body.items,
+            amount: req.body.amount,
+            address: req.body.address,
+        })
+        await newOrder.save();
+        await Users.findByIdAndUpdate(req.body.userId, { cartData: defaultCartData });
+
+        const line_items = req.body.items.map((item) => ({
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: item.name,
+                images: [item.image],
+              },
+              unit_amount: item.price*100
+            },
+            quantity: item.quantity
+          }))
+
+        line_items.push({
+            price_data:{
+                currency:"usd",
+                product_data:{
+                    name:"Delivery Charge"
+                },
+                unit_amount: 5*100
+            },
+            quantity:1
+        })
+        
+          const session = await stripe.checkout.sessions.create({
+            success_url: `http://localhost:3000/verify?success=true&orderId=${newOrder._id}`,
+            cancel_url: `http://localhost:3000/verify?success=false&orderId=${newOrder._id}`,
+            line_items: line_items,
+            mode: 'payment',
+          });
+      
+          res.json({success:true,session_url:session.url});
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" })
+    }
+});
 
 app.listen(port, (error) => {
     if (!error) {
