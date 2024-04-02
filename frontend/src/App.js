@@ -15,6 +15,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Footer } from './components/Footer/Footer';
 import ArtistList from './components/ArtistList/ArtistList';
 import PlaceOrder from './components/PlaceOrder/PlaceOrder';
+import MyOrders from './components/MyOrders/MyOrder';
+import Verify from './components/Verify/Verify';
 
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
           <Route path='/photographs' element={<Photographs category="Photograph" />} />
           <Route path='/digitalArt' element={<DigitalArt category="DigitalArt" />} />
           <Route path='/order' element={<PlaceOrder/>}/>
+          <Route path='/myorders' element={<MyOrders/>}/>
+          <Route path='/verify' element={<Verify />}/>
           
         </Routes>
         <Footer />

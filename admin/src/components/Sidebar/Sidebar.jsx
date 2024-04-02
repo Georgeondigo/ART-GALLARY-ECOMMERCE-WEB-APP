@@ -5,6 +5,7 @@ import addproduct from '../../assets/addproduct.png'
 import listproducts from '../../assets/listproducts.png'
 import addartist from '../../assets/addartist.png'
 import listartist from '../../assets/listartist.png'
+import ordericon from '../../assets/order_icon.png'
 const Sidebar = () => {
   return (
     <div className='sidebar'>
@@ -30,6 +31,12 @@ const Sidebar = () => {
         <div className="sidebar-item">
             <img src={listartist} alt="" />
             <p>Artist List</p>
+        </div>
+        </Link>
+        <Link to={'/listorders'} style={{textDecoration:"none"}}>
+        <div className="sidebar-item">
+            <img src={ordericon} alt="" />
+            <p>Orders</p>
         </div>
         </Link>
     </div>
