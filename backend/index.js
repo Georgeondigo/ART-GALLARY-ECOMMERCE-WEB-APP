@@ -500,18 +500,27 @@ const orderSchema = new mongoose.Schema({
     items: { type: Array, required:true},
     amount: { type: Number, required: true},
     address:{type:Object,required:true},
-    status: {type:String,default:"Food Processing"},
+    status: {type:String,default:"Order Processing"},
     date: {type:Date,default:Date.now()},
     payment:{type:Boolean,default:false}
 })
 
 const orderModel = mongoose.models.order || mongoose.model("order", orderSchema);
 
+// Function to get default cart data
+const getDefaultCart = () => {
+    let cart = {};
+    for (let index = 0; index <= 300; index++) {
+        cart[index] = 0;
+    }
+    return cart;
+}
+
 // Endpoint for placing an order
 app.post("/placeorder", async (req, res) => {
 
     try {
-        const defaultCartData = req.body.defaultCartData;
+        const defaultCartData = getDefaultCart();
         const newOrder = new orderModel({
             userId: req.body.userId,
             items: req.body.items,
@@ -545,8 +554,8 @@ app.post("/placeorder", async (req, res) => {
         })
         
           const session = await stripe.checkout.sessions.create({
-            success_url: `http://localhost:3000/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url: `http://localhost:3000/verify?success=false&orderId=${newOrder._id}`,
+            success_url: `http://localhost:3000/verifyorder?success=true&orderId=${newOrder._id}`,
+            cancel_url: `http://localhost:3000/verifyorder?success=false&orderId=${newOrder._id}`,
             line_items: line_items,
             mode: 'payment',
           });
@@ -558,6 +567,58 @@ app.post("/placeorder", async (req, res) => {
         res.json({ success: false, message: "Error" })
     }
 });
+
+// Endpoint for listing orders for admin panel
+app.get("/listorders", async (req, res) => {
+    try {
+        const orders = await orderModel.find({});
+        res.json({ success: true, data: orders })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" })
+    }
+});
+
+// Endpoint for updating order status
+app.post("/updatestatus", async (req, res) => {
+    console.log(req.body);
+    try {
+        await orderModel.findByIdAndUpdate(req.body.orderId, { status: req.body.status });
+        res.json({ success: true, message: "Status Updated" })
+    } catch (error) {
+        res.json({ success: false, message: "Error" })
+    }
+
+});
+
+// Endpoint for listing user orders for frontend
+app.post("/userorders", async (req, res) => {
+    try {
+        const orders = await orderModel.find({ userId: req.body.userId });
+        res.json({ success: true, data: orders })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" })
+    }
+});
+
+app.post("/verifyorder", async (req, res) => {
+    const {orderId , success} = req.body;
+    try {
+        if (success==="true") {
+            await orderModel.findByIdAndUpdate(orderId, { payment: true });
+            res.json({ success: true, message: "Paid" })
+        }
+        else{
+            await orderModel.findByIdAndDelete(orderId)
+            res.json({ success: false, message: "Not Paid" })
+        }
+    } catch (error) {
+        res.json({ success: false, message: "Not  Verified" })
+    }
+
+});
+
 
 app.listen(port, (error) => {
     if (!error) {
